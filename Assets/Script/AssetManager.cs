@@ -7,55 +7,52 @@ namespace Script
 {
     public class AssetManager : SingletonMonoBehaviour<AssetManager>
     {
-        public GameObject sceneInstantiator;
+        private GameObject sceneInstantiator;
         private Dictionary<string, IAssetRequest> _assets;
         private MonoBehaviour _monoBehaviour;
+        private List<string> _outstanding_request;
 
         private void Start()
         {
             _monoBehaviour = GetComponent<MonoBehaviour>();
             _assets = new Dictionary<string, IAssetRequest>();
+            _outstanding_request = new List<string>();
         }
 
 
         // TODO: Remove example code
         public void GetDrawer()
         {
-            StartCoroutine(OBJRequestCoroutine.GetRequest(
-                new OBJRequest("https://brandonkroes.com/MMS/drawer/IKEA-Alex_drawer_white-3D.obj",
-                    "IKEA-Alex_drawer_white-3D")));
+            GetAsset(new OBJRequest("https://brandonkroes.com/MMS/drawer/IKEA-Alex_drawer_white-3D.obj",
+                "IKEA-Alex_drawer_white-3D"));
         }
-        
+
         // TODO: Remove example code
         public void GetBed()
         {
-            var x = new OBJMTLRequest("https://brandonkroes.com/MMS/drawer/IKEA-Alex_drawer_white-3D.obj",
+            GetAsset(new OBJMTLRequest("https://brandonkroes.com/MMS/drawer/IKEA-Alex_drawer_white-3D.obj",
                 "https://brandonkroes.com/MMS/drawer/IKEA-Alex_drawer_white-3D.mtl",
-                "IKEA-Alex_drawer_white-3DMTL");
-            x.ExecuteRequest(_monoBehaviour);
+                "IKEA-Alex_drawer_white-3DMTL"));
         }
 
-
-        private void GetAsset(IAssetRequest request)
+        public void GetAsset(IAssetRequest request)
         {
+            if (_outstanding_request.Contains(request.GetRequestReference())) return;
+            _outstanding_request.Add(request.GetRequestReference());
             request.ExecuteRequest(_monoBehaviour);
         }
 
         public void SetAsset(IAssetRequest request)
         {
-            if (!_assets.ContainsKey(request.GetRequestReference()))
-            {
-                _assets.Add(request.GetRequestReference(), request);
+            if (_assets.ContainsKey(request.GetRequestReference())) return;
+            _assets.Add(request.GetRequestReference(), request);
 
-                _assets[request.GetRequestReference()].GetPayload().transform.SetParent(sceneInstantiator.transform);
-                _assets[request.GetRequestReference()].GetPayload().transform.localScale =
-                    new Vector3(0.01f, 0.01f, 0.01f);
-                _assets[request.GetRequestReference()].GetPayload().transform.position = new Vector3(0f, 10f, 0f);
+            _assets[request.GetRequestReference()].GetPayload().transform.SetParent(sceneInstantiator.transform);
+            _assets[request.GetRequestReference()].GetPayload().transform.localScale =
+                new Vector3(0.01f, 0.01f, 0.01f);
+            _assets[request.GetRequestReference()].GetPayload().transform.position = new Vector3(0f, 10f, 0f);
 
-                _assets[request.GetRequestReference()].GetPayload().SetActive(true);
-            }
-
-            print("instantiated");
+            _assets[request.GetRequestReference()].GetPayload().SetActive(true);
         }
     }
 }

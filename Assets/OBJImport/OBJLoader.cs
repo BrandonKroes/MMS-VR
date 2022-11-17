@@ -32,7 +32,7 @@ namespace OBJImport
         public GameObject Load(Stream input)
         {
             var reader = new StreamReader(input);
-            
+
             var builderDict = new Dictionary<string, OBJObjectBuilder>();
             OBJObjectBuilder currentBuilder = null;
             var currentMaterial = "default";
@@ -196,8 +196,7 @@ namespace OBJImport
             //finally, put it all together
             var obj =
                 new GameObject(_objInfo != null ? Path.GetFileNameWithoutExtension(_objInfo.Name) : "WavefrontObject");
-            obj.transform.localScale = new Vector3(-1f, 1f, 1f);
-            obj.SetActive(false);
+            obj.transform.localScale = new Vector3(1f, 1f, 1f);
 
             foreach (var builder in builderDict)
             {
