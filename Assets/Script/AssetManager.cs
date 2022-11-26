@@ -35,6 +35,12 @@ namespace Script
                 "IKEA-Alex_drawer_white-3DMTL"));
         }
 
+        public List<string> GetOutstandingRequests()
+        {
+            return this._outstanding_request;
+        }
+
+
         public void GetAsset(IAssetRequest request)
         {
             if (_outstanding_request.Contains(request.GetRequestReference())) return;
