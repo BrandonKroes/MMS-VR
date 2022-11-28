@@ -1,8 +1,8 @@
-public enum DownloadStatus
+public enum Status
 {
-    toBeDownloaded,
-    downloading,
-    downloaded
+    TOBEDOWNLOADNED,
+    DOWNLOADING,
+    DOWNLOADED
 }
 
 
@@ -10,7 +10,7 @@ public class Furniture
 {
     private string slugName;
     private string url;
-    public DownloadStatus downloadStatus;
+    public Status downloadStatus;
 
 
 
@@ -18,7 +18,7 @@ public class Furniture
 
     }
 
-    public Furniture(string slugName, string url, DownloadStatus downloadStatus) { 
+    public Furniture(string slugName, string url, Status downloadStatus) { 
     this.slugName = slugName;
         this.url = url; 
         this.downloadStatus = downloadStatus;
@@ -33,7 +33,7 @@ public class Furniture
         return url;
     }
 
-    public DownloadStatus getDownloadStatus()
+    public Status getDownloadStatus()
     {
         return downloadStatus;
     }
@@ -48,7 +48,7 @@ public class Furniture
         this.url = url;
     }
 
-    public void setDownloadStatus(DownloadStatus downloadStatus)
+    public void setDownloadStatus(Status downloadStatus)
     {
         this.downloadStatus = downloadStatus;
     }
