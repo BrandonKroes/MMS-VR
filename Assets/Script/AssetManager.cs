@@ -11,84 +11,19 @@ namespace Script
         public GameObject sceneInstantiator;
         private Dictionary<string, IAssetRequest> _assets;
         private MonoBehaviour _monoBehaviour;
-        private Dictionary<string, List<Furniture>> furnitures;
-
-        //Button 
-        private List<GameObject> _buttons;
-        //SubMeny reference
-        private  GameObject subMenu = Instantiate(Resources.Load("Content", typeof(GameObject))) as GameObject;
-
 
 
         private void Start()
         {
             _monoBehaviour = GetComponent<MonoBehaviour>();
             _assets = new Dictionary<string, IAssetRequest>();
-            furnitures = new Dictionary<string, List<Furniture>>();
-            _buttons = new List<GameObject>();
 
 
-            for (int i = 0; i < 3; i++)
-            {
-                var button = Instantiate(Resources.Load("CategoryButton", typeof(GameObject))) as GameObject;
-                if (button == null) continue;
-                button.transform.SetParent(subMenu.transform);
-                button.transform.localScale = Vector3.one;
-                button.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                button.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(i, i, 0);
-
-            }
+            
         }
 
 
-        //Fill data for testing
-        public void Fill() {
-            Status s = Status.TOBEDOWNLOADNED;
 
-            Furniture bed1 = new Furniture("IKEA-Alex_drawer_white-3D", "https", s);
-            Furniture bed2 = new Furniture("Rashid_bed", "https", s);
-
-            Furniture drawer1 = new Furniture("Setki_Drawer", "https", s);
-            Furniture drawer2 = new Furniture("Setki_Drawer", "https", s);
-
-            Furniture  door1= new Furniture("Brandon_door", "https", s);
-            Furniture  door2= new Furniture("Brandon_door", "https", s);
-
-            List<Furniture> beds = new List<Furniture>()
-            {
-               bed1,
-               bed2
-            };
-
-            List<Furniture> drawers = new List<Furniture>()
-            {
-               drawer1,
-               drawer2
-            };
-
-            List<Furniture> doors = new List<Furniture>()
-            {
-               door1,
-               door2
-            };
-
-            var furnitures = new Dictionary<string, List<Furniture>>(){
-                {"Bed",beds},
-                 {"Bed",drawers},
-                  {"Bed",doors}
-             };
-        }
-
-        //To load objects from button UI
-        public void LoadObject(Furniture item)
-        {
-            StartCoroutine(OBJRequestCoroutine.GetRequest(
-                new OBJRequest(
-                    item.getUrl(), 
-                    item.getSlugName()
-                    )));
-          
-        }
 
 
         // TODO: Remove example code

@@ -1,17 +1,22 @@
-public enum Status
+    public enum Status
 {
     TOBEDOWNLOADNED,
     DOWNLOADING,
     DOWNLOADED
 }
 
+public enum RQType
+{
+    OBJ,
+    OBJMTL
+}
 
 public class Furniture 
 {
     private string slugName;
     private string url;
     public Status downloadStatus;
-
+    public RQType rQType;
 
 
     public Furniture() { 
@@ -22,6 +27,7 @@ public class Furniture
     this.slugName = slugName;
         this.url = url; 
         this.downloadStatus = downloadStatus;
+        this.rQType = RQType.OBJ;
         }
     public string getSlugName()
     {
