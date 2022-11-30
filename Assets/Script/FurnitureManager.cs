@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -9,6 +10,8 @@ using Script.Coroutine;
 using Script.Generics;
 using TMPro;
 using UnityEditor.UI;
+using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 
 public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
@@ -37,10 +40,12 @@ public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
         Fill();
         //showAllSubMenuItems();
         CreateSubMenus();
-        CreateMenu();
-        this.activeCategory = "Bed";
+        //CreateMenu();
+        this.activeCategory = "Drawers";
         subMenuChoices();
         showAllSubMenuItems();
+        this.activeCategory = "Bed";
+        subMenuChoices();
 
 
     }
@@ -51,68 +56,54 @@ public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
         RemoveSubMenuChoices();
         var result = new List<Furniture>();
         this.furnitures.TryGetValue(this.activeCategory, out result);
-    //problem is that we make new clone and not using the same object
         foreach (var furniture in result)
         {
-            /*var button = Instantiate(submenu_prefab);
-            button.transform.SetParent(subMenu.transform);
+            var button = Instantiate(submenu_prefab, subMenu.transform, true);
             button.GetComponentInChildren<TextMeshProUGUI>().text = furniture.getSlugName();
-            button.SetActive(true); */
-            foreach (var var in Menubuttons)
-            {
-                if (furniture.getSlugName() == var.name)
-                {
-                    var.SetActive(true);
-                }
-            }
-         
+            button.SetActive(true);
         }
     }
     
     public void RemoveSubMenuChoices()
     {
-        // TODO: Flush all exsiting submenu items
-        foreach (var values in this.furnitures)
+        Transform[] ts = categoryMenu.GetComponentsInChildren<Transform>();
+        
+        foreach (var result in ts)
         {
-            if (values.Key != this.activeCategory)
+            if (result.parent == categoryMenu.transform && result.gameObject.name != this.activeCategory)
             {
-                var sub_menu=GameObject.Find(values.Key);
-                sub_menu.SetActive(false);
+                result.gameObject.SetActive(false);
             }
-
         }
+        
 
     }
 
     public void HideMenuItemsExcept(string activeCategory)
-    {
-        if (activeCategory == this.activeCategory)
-        {
-            showAllSubMenuItems();
-            RemoveSubMenuChoices();
-
-        }
-        this.activeCategory = activeCategory;
-        int children = transform.childCount;
-        for (int i = 0; i < children; ++i)
-        {
-            if (this.activeCategory != transform.GetChild(i).name)
+    {   
+        if(this.furnitures.Keys.Contains(activeCategory)){
+            if (activeCategory == this.activeCategory)
             {
-                // hey setactive(false)
+                showAllSubMenuItems();
+
             }
+            
+            this.activeCategory = activeCategory;
+            subMenuChoices();
         }
         
-        subMenuChoices();
     }
 
 
     private void showAllSubMenuItems()
     {
-        foreach (var btn in this._buttons)
+        Transform[] ts = categoryMenu.GetComponentsInChildren<Transform>(true);
+        
+        foreach (var result in ts)
         {
-            if (btn.activeSelf == false)
+            if (result.parent == categoryMenu.transform )
             {
-                btn.SetActive(true);
+                result.gameObject.SetActive(true);
             }
         }
         
@@ -120,21 +111,20 @@ public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
 
 
     }
-
+    
+    
     private void hideAllMenuFurniture()
     {
-        var result = new List<Furniture>();
-        this.furnitures.TryGetValue(this.activeCategory, out result);
-
-        print(result);
-        foreach (var btn in result)
+        Transform[] ts = subMenu.GetComponentsInChildren<Transform>();
+        
+        foreach (var result in ts)
         {
-            var button=GameObject.Find(btn.getSlugName());
-            if (button.activeSelf == true)
+            if (result.parent == subMenu.transform)
             {
-                button.SetActive(false);
+                Destroy(result.gameObject);
             }
-        }
+        }        
+
     }
 
 
@@ -143,8 +133,14 @@ public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
         foreach(var furniture_category in this.furnitures)
         {
 
-            var button = Instantiate(category_prefab);
-            button.transform.SetParent(categoryMenu.transform);
+            var button = Instantiate(category_prefab, categoryMenu.transform, true);
+            
+            //InputHelpers.Button b = button.GetComponent<InputHelpers.Button>();
+            //b.onClick.AddListener(delegate
+            //{
+            //    FurnitureManager.Instance.HideMenuItemsExcept(furniture_category.Key);
+            //}); 
+
             button.name = furniture_category.Key; //GetComponentInChildren<TextMeshPro>().text = furniture_category.Key;
             button.GetComponentInChildren<TextMeshProUGUI>().text = furniture_category.Key;
             button.name = furniture_category.Key;
@@ -180,7 +176,7 @@ public class FurnitureManager : SingletonMonoBehaviour<FurnitureManager>
     
     
     public void TaskOnClick(){
-        print ("You have clicked the button!");
+        print("TaskOnClick");
     }
     
     
