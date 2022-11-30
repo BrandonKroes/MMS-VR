@@ -56,8 +56,6 @@ namespace Script
             request.GetPayload().GetComponent<GrabScaleAdjust>().SetControllers(l.transform, r.transform);
             _assets.Add(request.GetRequestReference(), request);
             _assets[request.GetRequestReference()].GetPayload().transform.SetParent(sceneInstantiator.transform);
-            _assets[request.GetRequestReference()].GetPayload().transform.localScale =
-                new Vector3(0.01f, 0.01f, 0.01f);
             _assets[request.GetRequestReference()].GetPayload().transform.position = new Vector3(0f, 10f, 0f);
 
             _assets[request.GetRequestReference()].GetPayload().SetActive(true);
