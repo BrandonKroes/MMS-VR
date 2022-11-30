@@ -23,6 +23,7 @@ namespace Script.Coroutine
                 new MemoryStream(Encoding.UTF8.GetBytes(webRequest.downloadHandler.text)));
             gameObject.name = request.GetAssetManagerRequestReference();
             gameObject.AddComponent<DefaultFurniture>();
+            gameObject.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
 
             request.SetPayload(gameObject);
             AssetManager.Instance.SetAsset(request);

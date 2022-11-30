@@ -32,7 +32,7 @@ namespace Script.Coroutine
 
             var gameObject = new OBJLoader().Load(request.memoryStreamOBJ, request.memoryStreamMTL);
             gameObject.name = request.GetAssetManagerRequestReference();
-            ;
+            gameObject.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
             gameObject.AddComponent<DefaultFurniture>();
 
             request.SetPayload(gameObject);
