@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e492cfe261af5bb4abfe9550eea0fbe3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - categoryMenu: {instanceID: 0}
+  - subMenu: {fileID: 7879073527102053126, guid: 3d8192473bd7be64bb7fef359911f28f, type: 3}
+  - category_prefab: {fileID: 5675110095117452164, guid: 6e0f439a85ae70f48ac62507ffdb0ac5, type: 3}
+  - submenu_prefab: {fileID: 8070067325457094652, guid: 5eaba7a2ffac474439f7ba2a7a2d33c4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
